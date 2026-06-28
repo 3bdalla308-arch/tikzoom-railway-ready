@@ -1,15 +1,38 @@
 """Configuration loaded from environment variables and persisted DB settings."""
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from pathlib import Path
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Resolve .env relative to the project root (parent of the `app/` package)
+# so it loads correctly regardless of the current working directory
+# (Railway, Docker, etc.).
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_ENV_FILE = _PROJECT_ROOT / ".env"
+
+# Eagerly load .env into os.environ as a safety net for any code that reads
+# os.environ directly (bypassing pydantic-settings).
+if _ENV_FILE.exists():
+    try:
+        for _line in _ENV_FILE.read_text(encoding="utf-8").splitlines():
+            _line = _line.strip()
+            if not _line or _line.startswith("#") or "=" not in _line:
+                continue
+            _k, _, _v = _line.partition("=")
+            _k = _k.strip()
+            _v = _v.strip().strip('"').strip("'")
+            # Don't overwrite real environment variables provided by Railway/host
+            os.environ.setdefault(_k, _v)
+    except OSError:
+        pass
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(env_file=str(_ENV_FILE), env_file_encoding="utf-8", extra="ignore")
 
     bot_token: str = Field(default="", alias="BOT_TOKEN")
     admin_ids: str = Field(default="", alias="ADMIN_IDS")
