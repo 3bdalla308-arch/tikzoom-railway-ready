@@ -1,0 +1,22 @@
+# انسخ السطور دي والصقها مباشرة في Railway → Variables → Raw Editor
+# ====================================================================
+
+BOT_TOKEN=8633510294:AAF47_jGJyVGdfNdxljD76CdOHl_swbevN4
+ADMIN_IDS=6472365461
+WEBHOOK_SECRET=1c2b36206d15393b0c73e98a68781c453dea5414a1db2a6e52ba183634d990d7
+FERNET_KEY=SyD-ABw3_ZjPOCq8DFSj4M7AfkrQ1Erg1BRCthFQqww=
+PUBLIC_BASE_URL=https://CHANGE-ME-AFTER-GENERATING-DOMAIN.up.railway.app
+HOST=0.0.0.0
+DATA_DIR=/data
+DB_PATH=/data/platform.db
+BOTS_DIR=/data/bots_storage
+DEFAULT_LANG=ar
+HOSTED_PORT_START=18000
+HOSTED_PORT_END=18999
+FORCE_SUB_CHANNELS=
+
+# مهم: بعد ما Railway يديك دومين من Settings → Networking → Generate Domain
+# عدّل PUBLIC_BASE_URL بالدومين الفعلي ثم Redeploy
+#
+# بعد كده شغّل الويبهوك من المتصفح:
+# https://api.telegram.org/bot8633510294:AAF47_jGJyVGdfNdxljD76CdOHl_swbevN4/setWebhook?url=<PUBLIC_BASE_URL>/tg/main&secret_token=1c2b36206d15393b0c73e98a68781c453dea5414a1db2a6e52ba183634d990d7
